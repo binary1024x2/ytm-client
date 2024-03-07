@@ -1,0 +1,135 @@
+:root {
+    --ytmclient-titlebar-height: 31px;
+}
+
+ytmusic-app ytmusic-app-layout ytmusic-nav-bar {
+    margin-top: var(--ytmclient-titlebar-height);
+}
+
+
+ytmusic-app[is-bauhaus-sidenav-enabled] #mini-guide-spacer.ytmusic-app,
+ytmusic-app[is-guide-persistent][is-bauhaus-sidenav-enabled] #guide-spacer.ytmusic-app {
+    margin-top: calc(var(--ytmusic-nav-bar-height) + var(--ytmclient-titlebar-height)) !important;
+}
+
+ytmusic-guide-renderer:not([is-guide-persistent]) {
+    padding-top: var(--ytmclient-titlebar-height) !important;
+}
+
+ytmusic-app ytmusic-app-layout #content ytmusic-browse-response .background-gradient #content-wrapper {
+    padding-top: var(--ytmclient-titlebar-height);
+}
+
+#content.ytmusic-app > *.ytmusic-app:not([immersive-mode]) {
+    padding-top: calc(var(--ytmusic-nav-bar-height) + var(--ytmclient-titlebar-height)) !important;
+}
+
+ytmusic-app ytmusic-app-layout #nav-bar-background {
+    padding-top: var(--ytmclient-titlebar-height);
+}
+
+#nav-bar-divider.ytmusic-app-layout {
+    top: calc(var(--ytmusic-nav-bar-height) + var(--ytmclient-titlebar-height)) !important;
+}
+
+ytmusic-cast-button {
+    display: none !important;
+}
+
+ytmusic-player-page:not([is-mweb-modernization-enabled]) .content.ytmusic-player-page {
+    padding: calc(var(--ytmusic-player-page-vertical-padding) + var(--ytmclient-titlebar-height)) var(--ytmusic-player-page-horizontal-padding) 0 !important;
+}
+
+
+.ytmclient-titlebar {
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--ytmclient-titlebar-height);
+    z-index: 9999;
+    -webkit-app-region: drag;
+    display: flex;
+    flex-direction: row;
+}
+
+.ytmclient-navigation-button {
+    color: var(--yt-spec-icon-active-other);
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    margin-right: 8px;
+    justify-content: center;
+    font-size: 12px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    position: relative;
+    font-size: 0;
+    border: none;
+    background: none;
+    transition: background 200ms ease;
+    -webkit-app-region: none !important;
+}
+
+.ytmclient-navigation-button:hover {
+    background-color: #ffffff0f;
+    transition: background 200ms ease;
+}
+
+.ytmclient-navigation-button:active {
+    background-color: #ffffff1f;
+    transition: background 200ms ease;
+}
+
+.ytmclient-settings-menu-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-direction: row;
+    align-items: center;
+    font-family: 'Roboto', 'Noto', sans-serif;
+    line-height: 24px;
+    min-height: 48px;
+    position: relative;
+    text-decoration: none;
+}
+
+.ytmclient-settings-menu-item.selected {
+    background: #4e4e4e;
+    font-weight: bold;
+}
+
+.ytmclient-settings {
+    border-bottom: 1px solid #4e4e4e;
+    display: block;
+    padding: 20px 0;
+    font-family: 'Roboto', 'Noto', sans-serif;
+}
+
+.ytmclient-settings-label-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.ytmclient-settings-label {
+    display: block;
+    font-size: 16px;
+    color: #ffffff;
+    flex: 1;
+}
+
+.ytmclient-settings-summary {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: var(--ytmusic-body-line-height);
+    color: #aaaaaa;
+    display: block;
+    margin: 2px 0 0 0;
+    cursor: pointer;
+}

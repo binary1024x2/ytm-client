@@ -1,0 +1,10 @@
+{
+    "BACK": "Back",
+    "FORWARD": "Forward",
+    "DISCORD_PRECENSE": "Discord precense",
+    "DISCORD_PRECENSE_SUMMARY": "Show what you are listening on Discord",
+    "SKIP_ADS": "Skip ads",
+    "SKIP_ADS_SUMMARY": "Automatically speed and skip ads",
+    "DELETE_CACHE": "Delete cache",
+    "CLIENT": "Client"
+}

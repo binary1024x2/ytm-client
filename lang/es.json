@@ -1,0 +1,10 @@
+{
+    "BACK": "Regresar",
+    "FORWARD": "Avanzar",
+    "DISCORD_PRECENSE": "Compartir en Discord",
+    "DISCORD_PRECENSE_SUMMARY": "Muestra lo que estás escuchando en Discord",
+    "SKIP_ADS": "Saltar anúncios",
+    "SKIP_ADS_SUMMARY": "Saltar anúncios automaticamente",
+    "DELETE_CACHE": "Borrar cache",
+    "CLIENT": "Cliente"
+}

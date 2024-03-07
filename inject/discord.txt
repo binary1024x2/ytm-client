@@ -1,0 +1,6 @@
+/* Replace with your own application ID */
+const DISCORD_APP_ID = "your discord app id"
+
+module.exports = {
+    DISCORD_APP_ID
+}
