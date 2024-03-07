@@ -2,8 +2,8 @@ module.exports = {
   packagerConfig: {
     asar: true,
     icon: './icon',
-    name: 'YT Music Client',
-    executableName: 'YT Music Client',
+    name: 'YTMusicClient',
+    executableName: 'YTMusicClient',
     extraResource: [
       "./inject",
       "./lang",
@@ -16,8 +16,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         setupIcon: './icon-small.ico',
-        iconUrl: './icon.ico',
-        name: "YT Music Client"
+        name: "YTMusicClient"
       },
     },
     {
