@@ -92,16 +92,18 @@ function createWindow() {
         minHeight: 600,
         show: false,
         icon: appIcon,
-        titleBarStyle: 'hidden',
-        titleBarOverlay: {
+        titleBarStyle: (process.platform === "win32" || process.platform === "darwin" ? "hidden" : "default"),
+        titleBarOverlay: (process.platform === "win32" || process.platform === "darwin" ? {
             color: "#00000000",
             symbolColor: "#ffffff"
-        },
+        } : false),
         webPreferences: {
             preload: path.join(__dirname, "inject", "preload.js")
         }
     })
-    //win.webContents.openDevTools()
+    if (process.argv.includes("--dev-console")) {
+        win.webContents.openDevTools()
+    }
     win.webContents.on('will-navigate', (e) => {
         const url = new URL(e.url)
         if (url.hostname.startsWith('music.youtube.com')) {
@@ -134,6 +136,16 @@ function createWindow() {
                         win.show()
                     })
                 })
+            }).finally(() => {
+                if (process.platform === "win32" || process.platform === "darwin") {
+                    fs.readFile(resources.getPath("inject/nonlinux.style.css"), { encoding: "utf-8" }, (err2, nlnxcss) => {
+                        if (err2) {
+                            console.error(err2)
+                            return
+                        }
+                        win.webContents.insertCSS(nlnxcss)
+                    })
+                }
             })
         })
     })
@@ -241,7 +253,9 @@ function createWindow() {
         })
     })
     win.on('closed', () => {
-        client.user?.clearActivity()
+        if (client.isConnected) {
+            client.user?.clearActivity()
+        }
     })
     win.setMenu(null)
     const userAgent = `Mosilla/5.0 (${os.type().replace(/_/gm, ' ')} ${os.release()}; x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36`
@@ -254,6 +268,9 @@ function createWindow() {
 
 app.whenReady().then(() => {
     ipcMain.on("update-discord-precense", (_, data) => {
+        if (!client.isConnected) {
+            return
+        }
         if (data.video_id === null || typeof data.video_id === "undefined") {
             client.user?.clearActivity()
             return
@@ -291,10 +308,15 @@ app.whenReady().then(() => {
     ipcMain.handle("delete-cache", () => {
         return mainWindow.webContents.session.clearCache()
     })
+    ipcMain.handle("request-platform", () => {
+        return Promise.resolve(process.platform)
+    })
     createWindow()
     app.on('window-all-closed', () => {
         if (process.platform !== 'darwin') {
-            client.user?.clearActivity().then(() => client.destroy()).finally(() => app.quit())
+            if (client.isConnected) {
+                client.user?.clearActivity().then(() => client.destroy()).finally(() => app.quit())
+            }
         }
     })
     app.on('activate', () => {

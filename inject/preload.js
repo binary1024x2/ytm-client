@@ -20,5 +20,8 @@ contextBridge.exposeInMainWorld("ytmclient", {
     },
     onUrlUpdateListener(handler) {
         _onUrlUpdateListener = handler
+    },
+    requestPlatform() {
+        return ipcRenderer.invoke("request-platform")
     }
 })

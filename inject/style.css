@@ -1,57 +1,5 @@
-:root {
-    --ytmclient-titlebar-height: 31px;
-}
-
-ytmusic-app ytmusic-app-layout ytmusic-nav-bar {
-    margin-top: var(--ytmclient-titlebar-height);
-}
-
-
-ytmusic-app[is-bauhaus-sidenav-enabled] #mini-guide-spacer.ytmusic-app,
-ytmusic-app[is-guide-persistent][is-bauhaus-sidenav-enabled] #guide-spacer.ytmusic-app {
-    margin-top: calc(var(--ytmusic-nav-bar-height) + var(--ytmclient-titlebar-height)) !important;
-}
-
-ytmusic-guide-renderer:not([is-guide-persistent]) {
-    padding-top: var(--ytmclient-titlebar-height) !important;
-}
-
-ytmusic-app ytmusic-app-layout #content ytmusic-browse-response .background-gradient #content-wrapper {
-    padding-top: var(--ytmclient-titlebar-height);
-}
-
-#content.ytmusic-app > *.ytmusic-app:not([immersive-mode]) {
-    padding-top: calc(var(--ytmusic-nav-bar-height) + var(--ytmclient-titlebar-height)) !important;
-}
-
-ytmusic-app ytmusic-app-layout #nav-bar-background {
-    padding-top: var(--ytmclient-titlebar-height);
-}
-
-#nav-bar-divider.ytmusic-app-layout {
-    top: calc(var(--ytmusic-nav-bar-height) + var(--ytmclient-titlebar-height)) !important;
-}
-
 ytmusic-cast-button {
     display: none !important;
-}
-
-ytmusic-player-page:not([is-mweb-modernization-enabled]) .content.ytmusic-player-page {
-    padding: calc(var(--ytmusic-player-page-vertical-padding) + var(--ytmclient-titlebar-height)) var(--ytmusic-player-page-horizontal-padding) 0 !important;
-}
-
-
-.ytmclient-titlebar {
-    background: transparent;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--ytmclient-titlebar-height);
-    z-index: 9999;
-    -webkit-app-region: drag;
-    display: flex;
-    flex-direction: row;
 }
 
 .ytmclient-navigation-button {

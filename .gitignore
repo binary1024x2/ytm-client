@@ -3,3 +3,4 @@ node_modules/
 inject/discord.js
 .vscode/
 out/
+auto/auto.sh

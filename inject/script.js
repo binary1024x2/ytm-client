@@ -1,5 +1,4 @@
 (function() {
-    console.log("Begining code injection")
 
     if (window.trustedTypes && window.trustedTypes.createPolicy) {
         window.trustedTypes.createPolicy('default', {
@@ -208,10 +207,14 @@
     }
 
     function bindTitleBar() {
-        const titleBar = document.createElement("div")
-        titleBar.classList.add("ytmclient-titlebar")
-        const target = document.querySelector("body ytmusic-app ytmusic-app-layout")
-        target.appendChild(titleBar)
+        ytmclient.requestPlatform().then((value) => {
+            if (value === "win32" || value === "darwin") {
+                const titleBar = document.createElement("div")
+                titleBar.classList.add("ytmclient-titlebar")
+                const target = document.querySelector("body ytmusic-app ytmusic-app-layout")
+                target.appendChild(titleBar)
+            }
+        })
     }
 
     function bindNavigation() {

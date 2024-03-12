@@ -27,7 +27,13 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          icon: './icon.png'
+          icon: './icon.png',
+          bin: "YTMusicClient",
+          name: "ytmusic-client",
+          categories: [
+            "Audio"
+          ],
+          description: "Unoficial YouTube Music Client"
         }
       },
     }
