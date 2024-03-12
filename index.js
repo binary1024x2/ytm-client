@@ -316,6 +316,8 @@ app.whenReady().then(() => {
         if (process.platform !== 'darwin') {
             if (client.isConnected) {
                 client.user?.clearActivity().then(() => client.destroy()).finally(() => app.quit())
+            } else {
+                app.quit()
             }
         }
     })
