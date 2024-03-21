@@ -1,6 +1,6 @@
 {
   "name": "ytm-client",
-  "version": "0.2",
+  "version": "0.2.0",
   "description": "YouTube Music Client",
   "main": "index.js",
   "scripts": {
