@@ -4,3 +4,4 @@ inject/discord.js
 .vscode/
 out/
 auto/auto.sh
+installer.ifp

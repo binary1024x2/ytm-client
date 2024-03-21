@@ -64,79 +64,75 @@
         return Math.random().toString(32).substring(2)
     }
 
+    function createSettingsEntry(title, description, builder) {
+        const entryId = id()
+        const entryWrapper = document.createElement("div")
+        entryWrapper.classList.add("ytmclient-settings")
+        const labelWrapper = document.createElement("div")
+        labelWrapper.classList.add("ytmclient-settings-label-wrapper")
+        const label = document.createElement("label")
+        label.classList.add("ytmclient-settings-label")
+        label.htmlFor = entryId
+        label.appendChild(document.createTextNode(title))
+        labelWrapper.appendChild(label)
+        if (typeof builder === "function") {
+            const element = builder(entryId, (event, handler) => {
+                entryWrapper.addEventListener(event, handler)
+            })
+            if (element) {
+                labelWrapper.appendChild(element)
+            }
+        }
+        entryWrapper.appendChild(labelWrapper)
+        if (description !== null && typeof description === "string" && description !== "") {
+            const summary = document.createElement("p")
+            summary.classList.add("ytmclient-settings-summary")
+            summary.appendChild(document.createTextNode(description))
+            entryWrapper.appendChild(summary)
+        }
+        return entryWrapper
+    }
+
     function renderClientSettings() {
         const dialog = document.querySelector("ytmusic-settings-page.ytmusic-dialog")
         const list = dialog.querySelector(".content ytmusic-setting-category-collection-renderer #items")
         list.querySelectorAll("*").forEach((node) => {
             node.style.display = "none"
         })
-        const discordId = id()
-        const discordPresence = document.createElement("div")
-        discordPresence.classList.add("ytmclient-settings")
-        const discordLabelWrapper = document.createElement("div")
-        discordLabelWrapper.classList.add("ytmclient-settings-label-wrapper")
-        const discordLabel = document.createElement("label")
-        discordLabel.classList.add("ytmclient-settings-label")
-        discordLabel.htmlFor = discordId
-        discordLabel.appendChild(document.createTextNode(strings["DISCORD_PRECENSE"]))
-        discordLabelWrapper.appendChild(discordLabel)
-        const discordCheck = document.createElement("input")
-        discordCheck.type = "checkbox"
-        discordCheck.id = discordId
-        discordCheck.checked = preferences.discord
-        discordCheck.addEventListener("change", () => {
-            preferences.discord = discordCheck.checked
-            savePreferences()
-        })
-        discordLabelWrapper.appendChild(discordCheck)
-        discordPresence.appendChild(discordLabelWrapper)
-        const discordSummary = document.createElement("p")
-        discordSummary.classList.add("ytmclient-settings-summary")
-        discordSummary.appendChild(document.createTextNode(strings["DISCORD_PRECENSE_SUMMARY"]))
-        discordPresence.appendChild(discordSummary)
-        list.appendChild(discordPresence)
-
-        const skipAdsId = id()
-        const skipAds = document.createElement("div")
-        skipAds.classList.add("ytmclient-settings")
-        const skipAdsWrapper = document.createElement("div")
-        skipAdsWrapper.classList.add("ytmclient-settings-label-wrapper")
-        const skipAdsLabel = document.createElement("label")
-        skipAdsLabel.classList.add("ytmclient-settings-label")
-        skipAdsLabel.appendChild(document.createTextNode(strings["SKIP_ADS"]))
-        skipAdsLabel.htmlFor = skipAdsId
-        skipAdsWrapper.appendChild(skipAdsLabel)
-        const skipAdsCheck = document.createElement("input")
-        skipAdsCheck.type = "checkbox"
-        skipAdsCheck.id = skipAdsId
-        skipAdsCheck.checked = preferences.skipAds
-        skipAdsCheck.addEventListener("change", () => {
-            preferences.skipAds = skipAdsCheck.checked
-            savePreferences()
-        })
-        skipAdsWrapper.appendChild(skipAdsCheck)
-        skipAds.appendChild(skipAdsWrapper)
-        const skipAdsSummary = document.createElement("p")
-        skipAdsSummary.classList.add("ytmclient-settings-summary")
-        skipAdsSummary.appendChild(document.createTextNode(strings["SKIP_ADS_SUMMARY"]))
-        skipAds.appendChild(skipAdsSummary)
-        list.appendChild(skipAds)
-
-        const deleteCache = document.createElement("div")
-        deleteCache.classList.add("ytmclient-settings")
-        const deleteCacheWrapper = document.createElement("div")
-        deleteCacheWrapper.classList.add("ytmclient-settings-label-wrapper")
-        const deleteCacheLabel = document.createElement("label")
-        deleteCacheLabel.classList.add("ytmclient-settings-label")
-        deleteCacheLabel.appendChild(document.createTextNode(strings["DELETE_CACHE"]))
-        deleteCacheWrapper.appendChild(deleteCacheLabel)
-        deleteCache.appendChild(deleteCacheWrapper)
-        deleteCache.addEventListener("click", () => {
-            ytmclient.deleteCache().then(() => {
-                location.reload()
+        list.appendChild(createSettingsEntry(strings["DISCORD_PRECENSE"], strings["DISCORD_PRECENSE_SUMMARY"], (entryId, _) => {
+            const discordCheck = document.createElement("input")
+            discordCheck.type = "checkbox"
+            discordCheck.id = entryId
+            discordCheck.checked = preferences.discord
+            discordCheck.addEventListener("change", () => {
+                preferences.discord = discordCheck.checked
+                savePreferences()
             })
-        })
-        list.appendChild(deleteCache)
+            return discordCheck
+        }))
+        list.appendChild(createSettingsEntry(strings["SKIP_ADS"], strings["SKIP_ADS_SUMMARY"], (entryId, _) => {
+            const skipAdsCheck = document.createElement("input")
+            skipAdsCheck.type = "checkbox"
+            skipAdsCheck.id = entryId
+            skipAdsCheck.checked = preferences.skipAds
+            skipAdsCheck.addEventListener("change", () => {
+                preferences.skipAds = skipAdsCheck.checked
+                savePreferences()
+            })
+            return skipAdsCheck
+        }))
+        list.appendChild(createSettingsEntry(strings["DELETE_CACHE"], null, (_, eventBinder) => {
+            eventBinder("click", () => {
+                ytmclient.deleteCache().then(() => {
+                    location.reload()
+                })
+            })
+        }))
+        list.appendChild(createSettingsEntry("YTM Client v0.2", "GitHub", (_, eventBinder) => {
+            eventBinder("click", () => {
+                open("https://github.com/binary1024x2/ytm-client", "_blank")
+            })
+        }))
     }
 
     function addClientSettings() {
@@ -273,6 +269,40 @@
         }, 250)
     }
 
+    function durationToMillis(value) {
+        const parts = value.split(':').reverse()
+        let millis = 0
+        if (parts.length >= 1) {
+            millis += parseInt(parts[0])
+        }
+        if (parts.length >= 2) {
+            millis += parseInt(parts[1]) * 60
+        }
+        if (parts.length >= 3) {
+            millis += parseInt(parts[2]) * 60 * 60
+        }
+        return millis * 1000
+    }
+
+    function getReportedDuration() {
+        const span = document.querySelector('ytmusic-app ytmusic-app-layout ytmusic-player-bar #left-controls .time-info')
+        const data = span.textContent.trim().split('/')
+        const pos = data[0].trim()
+        const len = data[1].trim()
+        const posMillis = durationToMillis(pos)
+        const lenMillis = durationToMillis(len)
+        return {
+            position: {
+                value: pos,
+                millis: posMillis
+            },
+            length: {
+                value: len,
+                millis: lenMillis
+            }
+        }
+    }
+
     const prefs = getYouTubePreferences()
     ytmclient.loadLanguage("hl" in prefs ? prefs["hl"].substring(0, 2) : navigator.language.substring(0, 2)).then((lang) => {
         strings = JSON.parse(lang)
@@ -327,6 +357,7 @@
         if (typeof data.video_id === "undefined") {
             return
         }
+        data['duration'] = getReportedDuration()
         data["video_url"] = getVideoUrl()
         const imageThumb = document.querySelector('ytmusic-player-bar.ytmusic-app div.middle-controls.ytmusic-player-bar img.image.ytmusic-player-bar')
         if (imageThumb) {

@@ -267,24 +267,36 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+    let oldVideoId = null
+    let startTime = 0
     ipcMain.on("update-discord-precense", (_, data) => {
         if (!client.isConnected) {
             return
         }
         if (data.video_id === null || typeof data.video_id === "undefined") {
+            oldVideoId = null
             client.user?.clearActivity()
             return
+        }
+        if (oldVideoId === null || oldVideoId !== data.video_id) {
+            oldVideoId = data.video_id
+            startTime = Date.now()
         }
         try {
             const activity = {
                 largeImageKey: "icon2",
-                details: data.title,
-                state: data.author,
+                details: "🎵 " + data.title,
+                state: "🎤 " + data.author,
+                startTimestamp: startTime,
                 type: 2,
                 buttons: [
                     {
                         url: data["video_url"],
-                        label: "YouTube Music"
+                        label: "Listen"
+                    },
+                    {
+                        url: "https://github.com/binary1024x2/ytm-client/releases",
+                        label: "GitHub"
                     }
                 ]
             }
