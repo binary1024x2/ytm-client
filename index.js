@@ -1,10 +1,6 @@
-const { app, BrowserWindow, shell, ipcMain, Menu, clipboard, nativeImage } = require("electron")
+if(require('electron-squirrel-startup')) return;
 
-try {
-    if (require('electron-squirrel-startup')) { // Avoid showing the app on installation
-        app.quit()
-    }
-} catch {}
+const { app, BrowserWindow, shell, ipcMain, Menu, clipboard, nativeImage } = require("electron")
 
 const fs = require("fs")
 const path = require("path")
